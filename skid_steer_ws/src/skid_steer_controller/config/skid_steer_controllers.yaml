@@ -121,9 +121,9 @@ joint_state_broadcaster:
 simple_velocity_controller:
   ros__parameters:
     joints:
-      - base_right_front_wheel_joint
       - base_right_mid_wheel_joint
-      - base_right_back_wheel_joint
-      - base_left_front_wheel_joint
       - base_left_mid_wheel_joint
+      - base_right_front_wheel_joint
+      - base_left_front_wheel_joint
+      - base_right_back_wheel_joint
       - base_left_back_wheel_joint
