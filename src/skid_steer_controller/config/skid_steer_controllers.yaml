@@ -1,0 +1,75 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100
+    use_sim_time: false
+
+    joint_state_broadcaster: 
+      type: joint_state_broadcaster/JointStateBroadcaster
+    
+    simple_velocity_controller:
+      type: velocity_controllers/JointGroupVelocityController
+     
+    skid_steer_controller_V1:
+      type: diff_drive_controller/DiffDriveController
+
+        
+skid_steer_controller_V1:
+   ros__parameters:
+     use_sim_time: false
+     update_rate: 50
+     type: diff_drive_controller/DiffDriveController
+     use_stamped_vel: false
+     velocity_rolling_window_size: 10
+     base_frame_id: base_footprint
+     right_wheel_names: ['base_right_mid_wheel_joint', 'base_right_front_wheel_joint', 'base_right_back_wheel_joint']
+     left_wheel_names: ['base_left_front_wheel_joint', 'base_left_mid_wheel_joint', 'base_left_back_wheel_joint']
+     pose_covariance_diagonal: [0.001, 0.001, 1000000.0, 1000000.0, 1000000.0, 0.01]
+     twist_covariance_diagonal: [0.001, 0.001, 0.001, 1000000.0, 1000000.0, 0.01]
+
+     wheels_per_side: 1 #signal
+     wheel_radius: 0.048
+     wheel_separation: 0.63
+     left_wheel_radius_multiplier: 1.0
+     right_wheel_radius_multiplier: 1.0
+     wheel_separation_multiplier: 1.0
+
+     position_feedback: true
+     open_loop: false
+
+     cmd_vel_timeout: 0.25
+     base_frame_id: base_footprint
+     publish_limited_velocity: true
+     publish_wheel_data: true
+     enable_odom_tf: false
+    # odom_frame_id: "odom_ros2_control"
+     linear:
+       x:
+         has_velocity_limits: true
+         max_velocity: 1.09
+         has_acceleration_limits: true
+         max_acceleration: 2.0
+         has_jerk_limits: false
+    
+     angular:
+       z:
+         has_velocity_limits: true
+         max_velocity: 2.9
+         has_acceleration_limits: true
+         max_acceleration: 2.5
+         has_jerk_limits: false
+     
+
+joint_state_broadcaster:
+  ros__parameters:
+    use_sim_time: false
+    
+
+simple_velocity_controller:
+  ros__parameters:
+    joints:
+      - base_right_mid_wheel_joint
+      - base_left_mid_wheel_joint
+      - base_right_front_wheel_joint
+      - base_left_front_wheel_joint
+      - base_right_back_wheel_joint
+      - base_left_back_wheel_joint

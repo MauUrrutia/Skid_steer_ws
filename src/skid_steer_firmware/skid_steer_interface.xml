@@ -1,0 +1,9 @@
+<library path="skid_steer_firmware">
+    <class name="skid_steer_firmware/SkidsteerInterface"
+           type="skid_steer_firmware::SkidsteerInterface"
+           base_class_type="hardware_interface::SystemInterface">
+        <description>
+            skid_steer hardware interface
+        </description>
+    </class>
+</library>

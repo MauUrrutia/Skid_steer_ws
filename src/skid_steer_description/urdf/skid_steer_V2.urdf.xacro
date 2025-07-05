@@ -1,0 +1,308 @@
+<?xml version="1.0" ?>
+<robot name="skid_steer" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:arg name="is_gazebo_ign" default="true"/> 
+  <xacro:arg name="is_sim" default="false"/>
+  <xacro:arg name="use_nominal_extrinsics" default="true" />
+  <xacro:arg name="add_plug" default="false" />
+  <xacro:arg name="use_mesh" default="true" />   
+  <xacro:include filename="$(find skid_steer_description)/urdf/materials.xacro" />
+  <xacro:include filename="$(find skid_steer_description)/urdf/common_properties.xacro" />
+  <xacro:include filename="$(find skid_steer_description)/urdf/skid_steer_control.xacro" />
+  <xacro:include filename="$(find skid_steer_description)/urdf/skid_steer_gazebo.xacro" />
+  <!-- Camara Intel Realsense D415 -->
+  <xacro:include filename="$(find realsense2_description)/urdf/_d415.urdf.xacro" />
+        <!-- AQUI EMPIEZA EL base_link Y BASE -->
+    <link name="base_footprint"/>
+    <link name="base_link">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="10"/>
+        <inertia ixx="0.104" iyy="0.118" izz="0.176" ixy="0.0" iyz="0.0" ixz="0.0"/>
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find skid_steer_description)/meshes/chasis.stl" scale="0.001 0.001 0.001"/> 
+        </geometry>
+        <material name="silver"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find skid_steer_description)/meshes/chasis.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+      </collision>
+    </link>
+
+
+    <joint name="base_joint" type="fixed">
+            <parent link="base_footprint" />
+            <child link="base_link" />
+            <origin xyz="0 0 0.24565" rpy="0 0 0" />
+    </joint>
+
+    <!-- AQUI TERMINA EL base_link Y base_footprint -->
+
+
+        <!-- AQUI EMPIEZAN LAS LLANTAS DERECHAS -->
+    <link name="right_front_wheel_link">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.166"/>
+        <inertia ixx="1.88176298336665E-05" ixy="-4.8444933029987E-10" ixz="1.88163708851143E-08"
+               iyy="3.11510738647764E-05" iyz="-6.93560663069607E-11"
+               izz="1.8801969558182E-05" />
+      </inertial>
+      <visual>
+        <origin xyz="0 -${0.057/2} 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${0.120/2}" length="${0.057}" />
+        </geometry>
+        <material name="silver"/>
+      </visual>
+      <collision>
+        <origin xyz="0 -${0.057/2} 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${0.120/2}" length="${0.057}" />    
+          </geometry>
+      </collision>
+    </link>
+
+    <link name="right_mid_wheel_link">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.166"/>
+        <inertia ixx="1.88176298336665E-05" ixy="-4.8444933029987E-10" ixz="1.88163708851143E-08"
+               iyy="3.11510738647764E-05" iyz="-6.93560663069607E-11"
+               izz="1.8801969558182E-05" />
+      </inertial>
+      <visual>
+        <origin xyz="0 -${0.057/2} 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${0.120/2}" length="${0.057}" />
+        </geometry>
+        <material name="silver"/>
+      </visual>
+      <collision>
+        <origin xyz="0 -${0.057/2} 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${0.120/2}" length="${0.057}" />    
+        </geometry>
+      </collision>
+    </link>
+    
+    <link name="right_back_wheel_link">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.166"/>
+        <inertia ixx="1.88176298336665E-05" ixy="-4.8444933029987E-10" ixz="1.88163708851143E-08"
+               iyy="3.11510738647764E-05" iyz="-6.93560663069607E-11"
+               izz="1.8801969558182E-05" />
+      </inertial>
+      <visual>
+        <origin xyz="0 -${0.057/2} 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${0.120/2}" length="${0.057}" />
+        </geometry>
+        <material name="silver"/>
+      </visual>
+      <collision>
+        <origin xyz="0 -${0.057/2} 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${0.120/2}" length="${0.057}" />    
+        </geometry>
+      </collision>
+    </link>
+
+    
+    <joint name="base_right_front_wheel_joint" type="continuous">
+            <parent link="base_link" />
+            <child link="right_front_wheel_link" />
+            <origin xyz="0.210 -0.284 -0.185649" rpy="0 0 0" />
+            <axis xyz="0 1 0" />
+    </joint>
+    <joint name="base_right_mid_wheel_joint" type="continuous">
+            <parent link="base_link" />
+            <child link="right_mid_wheel_link" />
+            <origin xyz="0 -0.284 -0.185649" rpy="0 0 0" />
+            <axis xyz="0 1 0" />
+    </joint>
+    <joint name="base_right_back_wheel_joint" type="continuous">
+            <parent link="base_link" />
+            <child link="right_back_wheel_link" />
+            <origin xyz="-0.210 -0.284 -0.185649" rpy="0 0 0" />
+            <axis xyz="0 1 0" />
+    </joint>
+    <!-- AQUI TERMINAN LAS LLANTAS DERECHAS -->
+
+
+    <!-- AQUI EMPIEZAN LAS LLANTAS IZQUIERDAS -->
+    <link name="left_front_wheel_link">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.166"/>
+        <inertia ixx="1.88176298336665E-05" ixy="-4.8444933029987E-10" ixz="1.88163708851143E-08"
+               iyy="3.11510738647764E-05" iyz="-6.93560663069607E-11"
+               izz="1.8801969558182E-05" />
+      </inertial>
+      <visual>
+        <origin xyz="0 ${0.057/2} 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${0.120/2}" length="${0.057}" />
+        </geometry>
+        <material name="silver"/>
+      </visual>
+      <collision>
+        <origin xyz="0 ${0.057/2} 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${0.120/2}" length="${0.057}" />    
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="left_mid_wheel_link">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.166"/>
+        <inertia ixx="1.88176298336665E-05" ixy="-4.8444933029987E-10" ixz="1.88163708851143E-08"
+               iyy="3.11510738647764E-05" iyz="-6.93560663069607E-11"
+               izz="1.8801969558182E-05" />
+      </inertial>
+      <visual>
+        <origin xyz="0 ${0.057/2} 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${0.120/2}" length="${0.057}" />
+        </geometry>
+        <material name="silver"/>
+      </visual>
+      <collision>
+        <origin xyz="0 ${0.057/2} 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${0.120/2}" length="${0.057}" />    
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="left_back_wheel_link">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.166"/>
+        <inertia ixx="1.88176298336665E-05" ixy="-4.8444933029987E-10" ixz="1.88163708851143E-08"
+               iyy="3.11510738647764E-05" iyz="-6.93560663069607E-11"
+               izz="1.8801969558182E-05" />
+      </inertial>
+      <visual>
+        <origin xyz="0 ${0.057/2} 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${0.120/2}" length="${0.057}" />
+        </geometry>
+        <material name="silver"/>
+      </visual>
+      <collision>
+        <origin xyz="0 ${0.057/2} 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${0.120/2}" length="${0.057}" />    
+        </geometry>
+      </collision>
+    </link>
+
+
+    <joint name="base_left_front_wheel_joint" type="continuous">
+            <parent link="base_link" />
+            <child link="left_front_wheel_link" />
+            <origin xyz="0.210 0.284 -0.185649" rpy="0 0 0" />
+            <axis xyz="0 1 0" />
+            
+    </joint>
+    <joint name="base_left_mid_wheel_joint" type="continuous">
+            <parent link="base_link" />
+            <child link="left_mid_wheel_link" />
+            <origin xyz="0 0.284 -0.185649" rpy="0 0 0" />
+            <axis xyz="0 1 0" />
+            
+    </joint>
+    <joint name="base_left_back_wheel_joint" type="continuous">
+            <parent link="base_link" />
+            <child link="left_back_wheel_link" />
+            <origin xyz="-0.210 0.284 -0.185649" rpy="0 0 0" />
+            <axis xyz="0 1 0" />
+            
+    </joint>
+
+    <!-- AQUI TERMINAN LAS LLANTAS IZQUIERDAS -->
+    <!-- AQUI EMPIEZA EL IMU -->
+    <link name="imu_link">
+    <inertial>
+      <origin xyz="-0.00552433659106688 0.000168210391520346 0.000514000497342681" rpy="0 0 0" />
+      <mass value="0.000528415362211671" />
+      <inertia ixx="1.46176048428261E-08" ixy="1.40015117949421E-10" ixz="-1.99633872937403E-12"
+               iyy="8.59662482954888E-09" iyz="7.52375112767959E-12"
+               izz="2.30279421279312E-08" />
+    </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://skid_steer_description/meshes/imu_link.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://skid_steer_description/meshes/imu_link.STL" />
+        </geometry>
+      </collision>
+  </link>
+  
+  <joint name="imu_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="imu_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <!-- AQUI TERMINA EL IMU -->
+
+  <!-- LD19 LIDAR -->
+  <link name="ldlidar_base">
+    	<visual>
+      		<origin xyz="0 0 0" rpy="0 0 0"/>
+      		<geometry>
+        		<mesh filename="file://$(find ldlidar_node)/urdf/model/LD19.stl" scale="0.001 0.001 0.001" />
+      		</geometry>
+      		<material name="ldlidar_mat">
+        		<color rgba="0.8 0.8 0.8 0.8"/>
+      		</material>
+    	</visual>
+    
+    	<collision>
+      		<origin xyz="0 0 0" rpy="0 0 0"/>
+      		<geometry>
+        		<mesh filename="file://$(find ldlidar_node)/urdf/model/LD19.stl" scale="0.001 0.001 0.001" />
+      		</geometry>
+    	</collision>
+    
+    </link>
+
+    <!-- Enlace del láser -->
+    <link name="ldlidar_link">
+    </link>
+
+    <joint name="ldlidar_link_joint" type="fixed">
+        <parent link="ldlidar_base"/>
+        <child link="ldlidar_link"/>
+        <origin xyz="0 0 0.02745" rpy="0 0 0" />
+    </joint>
+  <joint name="ldlidar_base_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="ldlidar_base"/>
+    <origin xyz="0 0 ${(0.184/2.0)}" rpy="0 0 0"/>  
+  </joint>
+  <!-- AQUI EMPIEZA LA CAMARA -->
+  <xacro:sensor_d415 parent="base_link" name="d415" use_nominal_extrinsics="true" add_plug="false" use_mesh="true"> 
+    <!-- tengo que cambiar el origen de la camara :)-->
+    <origin xyz="0.240 0 -0.070" rpy="0 0 0" /> 
+</xacro:sensor_d415>
+
+</robot>
